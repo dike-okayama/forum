@@ -1,0 +1,107 @@
+<div>
+    <div class="card">
+        <div class="card-body">
+            <h6 class="card-title">
+                書き込みの前に<a href="{{ url_for('note') }}" class="note"
+                    >投稿のルール</a
+                >をお読みください
+            </h6>
+        </div>
+    </div>
+    {% for i, post in enumerate(posts) %} {% if i %}
+    <div class="card" id="post{{ post.id }}">
+        <div
+            class="card-body"
+            style="background-color: {{ layer(post.emotion_value, 6) }}"
+        >
+            <h6 class="card-title">
+                {% autoescape false %} {{ decorator(post.content) }} {%
+                endautoescape %}
+            </h6>
+            {% if session['login'] %}
+            <div
+                class="admin-option"
+                style="position: absolute; right: 7px; top: 7px"
+            >
+                <a id="del-button" onClick="delPost({{ post.id }})">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-x-lg"
+                        viewBox="0 0 16 16"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"
+                        />
+                        <path
+                            fill-rule="evenodd"
+                            d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"
+                        />
+                    </svg>
+                </a>
+            </div>
+            {% endif %}
+            <a class="card-emotion-label"
+                >{{ classifier(post.emotion_value) }}</a
+            >
+            <nobr class="card-emotion-value"
+                >感情値: {{ post.emotion_value }}</nobr
+            >
+            <nobr class="card-date">{{ formatter(post.created_at, now) }}</nobr>
+        </div>
+    </div>
+    {% else %}
+    <div class="card" id="post{{post.id}}">
+        <div
+            class="card-body"
+            id="first-card"
+            style="background-color: {{ layer(post.emotion_value, 6) }}"
+        >
+            <h6 class="card-title" id="first-card-title">
+                {% autoescape false %}
+                <p class="TextTyping" id="first-content">{{ post.content }}</p>
+                {% endautoescape %}
+            </h6>
+            {% if session['login'] %}
+            <div
+                class="admin-option"
+                style="position: absolute; right: 7px; top: 7px"
+            >
+                <a id="del-button" onClick="delPost({{ post.id }})">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-x-lg"
+                        viewBox="0 0 16 16"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"
+                        />
+                        <path
+                            fill-rule="evenodd"
+                            d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"
+                        />
+                    </svg>
+                </a>
+            </div>
+            {% endif %}
+            <a class="card-emotion-label"
+                >{{ classifier(post.emotion_value) }}</a
+            >
+            <nobr class="card-emotion-value"
+                >感情値: {{ post.emotion_value }}</nobr
+            >
+            <nobr class="card-date">{{ formatter(post.created_at, now) }}</nobr>
+            <code id="decorated-post" style="display: none"
+                >{{ decorator(post.content) }}</code
+            >
+        </div>
+    </div>
+    {% endif %} {% endfor %}
+</div>

@@ -1,0 +1,89 @@
+{% extends 'base.html' %} {% block main %}
+
+<br /><br /><br />
+<div class="main">
+    <div class="left-menu">
+        <div class="cp_ipradio">
+            <details>
+                <summary>ソートする</summary>
+                <ul id="sort-method">
+                    <li class="list_item">
+                        <input
+                            type="radio"
+                            class="option-input"
+                            name="cpipr08"
+                            id="c_rb3"
+                            onClick="sortPosts()"
+                            checked="true"
+                        />
+                        <label for="c_rb3">投稿順(降順)</label>
+                    </li>
+                    <li class="list_item">
+                        <input
+                            type="radio"
+                            class="option-input"
+                            name="cpipr08"
+                            id="c_rb4"
+                            onClick="sortPosts()"
+                        />
+                        <label for="c_rb4">投稿順(昇順)</label>
+                    </li>
+                    <li class="list_item">
+                        <input
+                            type="radio"
+                            class="option-input"
+                            name="cpipr08"
+                            id="c_rb1"
+                            onClick="sortPosts()"
+                        />
+                        <label for="c_rb1">感情値(降順)</label>
+                    </li>
+                    <li class="list_item">
+                        <input
+                            type="radio"
+                            class="option-input"
+                            name="cpipr08"
+                            id="c_rb2"
+                            onClick="sortPosts()"
+                        />
+                        <label for="c_rb2">感情値(昇順)</label>
+                    </li>
+                </ul>
+            </details>
+        </div>
+
+        <div class="wordcloud">
+            <details>
+                <summary>ワードクラウド</summary>
+                <span> {{ svg }} </span>
+            </details>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card" id="input-card">
+            <textarea
+                id="content"
+                placeholder="オープンキャンパスはどうでしたか"
+            ></textarea>
+            <hr id="post-hr" />
+            <br /><br />
+            <button
+                type="submit"
+                class="btn btn-outline-primary"
+                onClick="newPost()"
+                id="post-button"
+            >
+                書き込む
+            </button>
+        </div>
+
+        <div id="posts">{{ html }}</div>
+    </div>
+
+    <div class="right-menu"></div>
+
+    <hr />
+</div>
+
+{% endblock %}
