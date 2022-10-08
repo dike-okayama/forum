@@ -8,6 +8,7 @@ from flask import Flask, Markup, render_template, redirect, url_for, jsonify, fl
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.types import INTEGER, FLOAT, TEXT, DATETIME
 from markdown import markdown
+from bleach import clean
 
 from libs import (
     score_text,
@@ -69,7 +70,6 @@ def create_template(posts=None):
 
 
 @app.route('/')
-@debug
 def index():
     html = create_template(),
     svg = convert_posts_to_wordcloud(Post.query.order_by('created_at').all()),
@@ -103,8 +103,7 @@ def newpost():
         return jsonify({'test': '投稿は1文字以上140字以下に制限されています．'})
 
     # sanitizing
-    if any((_tag := tag) in content for tag in 'plaintext xmp meta img isindex FORM BODY IMG SCRIPT INPUT BODY <SCRIPT blink s font button script input a /TITLE'.split()):
-        return jsonify({'test': f'不正な文字列"{_tag}"が含まれているため，投稿がブロックされました．'})
+    content = clean(content, tags=['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'q', 'big', 'b', 'small', 'i', 'u', 'tt', 'strike'])
 
     new_post = Post(content=content,
                     emotion_value=round(score_text(content), 3),
